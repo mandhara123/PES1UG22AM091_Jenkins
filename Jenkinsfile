@@ -1,41 +1,33 @@
 pipeline {
     agent any
-
-    environment {
-        SRN = 'pes1ug22am091'
-    }
-
     stages {
-
         stage('Build') {
             steps {
-                echo 'Starting Build Stage...'
-                sh 'g++ -o ${SRN} main.cpp'
-                echo 'Build completed: ${SRN}'
+                sh 'mvn clean install'
+                echo 'Build Stage Successful'
             }
         }
-
         stage('Test') {
             steps {
-                echo 'Starting Test Stage...'
-                sh './${SRN}'
+                sh 'mvn test'
+                echo 'Test Stage Successful'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
             }
         }
-
         stage('Deploy') {
             steps {
-                echo 'Deploying Application...'
-                sh 'echo "Deployment successful for ${SRN}"'
+                sh 'mvn deploy'
+                echo 'Deployment Successful'
             }
         }
     }
-
     post {
         failure {
             echo 'Pipeline failed'
-        }
-        success {
-            echo 'Pipeline completed successfully'
         }
     }
 }
