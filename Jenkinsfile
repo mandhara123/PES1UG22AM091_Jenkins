@@ -13,7 +13,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    sh './pes1ug22am091-1'  // Run the compiled file
+                    sh './abcd'  // Run the compiled file
                 }
             }
         }
